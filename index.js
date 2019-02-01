@@ -4,9 +4,16 @@ const mongoose = require("mongoose");
 const departmentRoutes = require("./routes/department");
 const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/product");
+const ReviewRoutes = require("./routes/review");
 
 const app = express();
-app.use(body_parser.json(), departmentRoutes, categoryRoutes, productRoutes);
+app.use(
+  body_parser.json(),
+  departmentRoutes,
+  categoryRoutes,
+  productRoutes,
+  ReviewRoutes
+);
 
 // mongoose.connect(
 //   "mongodb://localhost/boutique_app",

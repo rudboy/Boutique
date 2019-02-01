@@ -2,31 +2,43 @@ const express = require("express");
 const router = express.Router();
 const body_parser = require("body-parser");
 const mongoose = require("mongoose");
+const productRoutes = require("./product");
+
 router.use(body_parser.json());
+
+const Category = require("../Models/Category_model");
+const Department = require("../Models//Department_model");
 
 mongoose.connect(
   "mongodb://localhost/boutique_app",
   { useNewUrlParser: true }
 );
 
-const Product = mongoose.model("Product", {
-  title: {
-    type: String,
-    default: ""
-  },
-  description: {
-    type: String,
-    default: ""
-  },
-  price: {
-    type: Number,
-    default: ""
-  },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category"
-  }
-});
+// const Product = mongoose.model("Product", {
+//   title: {
+//     type: String,
+//     default: ""
+//   },
+//   description: {
+//     type: String,
+//     default: ""
+//   },
+//   price: {
+//     type: Number,
+//     default: ""
+//   },
+//   category: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "Category"
+//   },
+//   reviews: [
+//     {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "Review"
+//     }
+//   ],
+//   averageRating: { type: Number, min: 0, max: 5 }
+// });
 const deleteFunction = async (req, res, choose) => {
   try {
     if (choose === "Department") {
@@ -69,7 +81,9 @@ router.post("/create_Product", async (req, res) => {
         title: req.body[i].title,
         description: req.body[i].description,
         price: req.body[i].price,
-        category: req.body[i].category
+        category: req.body[i].category,
+        reviews: req.body[i].reviews,
+        averageRating: req.body[i].averageRating
       });
 
       if (existingProduct === null) {
@@ -77,7 +91,9 @@ router.post("/create_Product", async (req, res) => {
           title: req.body[i].title,
           description: req.body[i].description,
           price: req.body[i].price,
-          category: req.body[i].category
+          category: req.body[i].category,
+          reviews: req.body[i].reviews,
+          averageRating: req.body[i].averageRating
         });
 
         await newProduct.save();

@@ -4,24 +4,27 @@ const body_parser = require("body-parser");
 const mongoose = require("mongoose");
 router.use(body_parser.json());
 
+const Product = require("../Models/Product_model");
+const Department = require("../Models//Department_model");
+
 mongoose.connect(
   "mongodb://localhost/boutique_app",
   { useNewUrlParser: true }
 );
-const Category = mongoose.model("Category", {
-  title: {
-    type: String,
-    default: ""
-  },
-  description: {
-    type: String,
-    default: ""
-  },
-  department: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Department"
-  }
-});
+// const Category = mongoose.model("Category", {
+//   title: {
+//     type: String,
+//     default: ""
+//   },
+//   description: {
+//     type: String,
+//     default: ""
+//   },
+//   department: {
+//     type: mongoose.Schema.Types.ObjectId,
+//     ref: "Department"
+//   }
+// });
 const deleteFunction = async (req, res, choose) => {
   try {
     if (choose === "Department") {
