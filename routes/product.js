@@ -1,44 +1,21 @@
+//Déclaration des imports
 const express = require("express");
 const router = express.Router();
 const body_parser = require("body-parser");
 const mongoose = require("mongoose");
-const productRoutes = require("./product");
 
 router.use(body_parser.json());
-
+// Modele Reviews
 const Category = require("../Models/Category_model");
 const Department = require("../Models//Department_model");
+const Product = require("../Models/Product_model");
 
+// Cnx a la base de donnée
 mongoose.connect(
   "mongodb://localhost/boutique_app",
   { useNewUrlParser: true }
 );
 
-// const Product = mongoose.model("Product", {
-//   title: {
-//     type: String,
-//     default: ""
-//   },
-//   description: {
-//     type: String,
-//     default: ""
-//   },
-//   price: {
-//     type: Number,
-//     default: ""
-//   },
-//   category: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "Category"
-//   },
-//   reviews: [
-//     {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "Review"
-//     }
-//   ],
-//   averageRating: { type: Number, min: 0, max: 5 }
-// });
 const deleteFunction = async (req, res, choose) => {
   try {
     if (choose === "Department") {
@@ -111,6 +88,11 @@ router.post("/create_Product", async (req, res) => {
   }
 });
 router.get("/Product", async (req, res) => {
+  let pageOptions = {
+    page: req.query.page || 0,
+    limit: 10
+  };
+
   let NewParametre = {};
   let parameter = req.query;
   if ("category" in parameter) {
@@ -134,9 +116,30 @@ router.get("/Product", async (req, res) => {
   } else if (req.query.sort === "price-desc") {
     const selectProduct = await Product.find(NewParametre).sort({ price: -1 });
     res.json(selectProduct);
-  } else {
-    const selectProduct = await Product.find(NewParametre);
+  }
+  if (req.query.sort === "rating-asc") {
+    const selectProduct = await Product.find(NewParametre.averageRating)
+      .sort({ price: 1 })
+      .populate("reviews");
     res.json(selectProduct);
+  } else if (req.query.sort === "rating-desc") {
+    const selectProduct = await Product.find(NewParametre.averageRating)
+      .sort({ price: -1 })
+      .populate("reviews");
+    res.json(selectProduct);
+  } else {
+    const selectProduct = await Product.find(NewParametre)
+      .populate("reviews")
+      .skip(pageOptions.page * pageOptions.limit)
+      .limit(pageOptions.limit)
+      .exec(function(err, doc) {
+        if (err) {
+          res.status(500).json(err);
+          return;
+        }
+        res.status(200).json(doc);
+      });
+    //res.json(selectProduct);
   }
 });
 router.post("/Product/update", async (req, res) => {
