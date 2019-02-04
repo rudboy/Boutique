@@ -11,10 +11,7 @@ const Department = require("../Models//Department_model");
 const Product = require("../Models/Product_model");
 
 // Cnx a la base de donnée
-mongoose.connect(
-  "mongodb://localhost/boutique_app",
-  { useNewUrlParser: true }
-);
+mongoose.connect("mongodb://localhost/boutique_app", { useNewUrlParser: true });
 
 const deleteFunction = async (req, res, choose) => {
   try {
@@ -130,8 +127,8 @@ router.get("/Product", async (req, res) => {
   } else {
     const selectProduct = await Product.find(NewParametre)
       .populate("reviews")
-      .skip(pageOptions.page * pageOptions.limit)
-      .limit(pageOptions.limit)
+      .skip(pageOptions.page * pageOptions.limit) //Ignore X resulta
+      .limit(pageOptions.limit) //limit a x resulta
       .exec(function(err, doc) {
         if (err) {
           res.status(500).json(err);
