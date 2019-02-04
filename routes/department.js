@@ -6,6 +6,7 @@ router.use(body_parser.json());
 
 const Product = require("../Models/Product_model");
 const Category = require("../Models/Category_model");
+const Department = require("../Models//Department_model");
 
 // mongoose.connect(  "mongodb://localhost/boutique_app",{ useNewUrlParser: true });
 

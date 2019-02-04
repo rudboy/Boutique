@@ -6,11 +6,10 @@ router.use(body_parser.json());
 
 const Product = require("../Models/Product_model");
 const Department = require("../Models//Department_model");
+const Category = require("../Models/Category_model");
 
-mongoose.connect(
-  "mongodb://localhost/boutique_app",
-  { useNewUrlParser: true }
-);
+// mongoose.connect(  "mongodb://localhost/boutique_app",{ useNewUrlParser: true });
+
 // const Category = mongoose.model("Category", {
 //   title: {
 //     type: String,
@@ -87,7 +86,7 @@ router.post("/create_Category", async (req, res) => {
       }
     }
   } catch (error) {
-    res.status(400).json({ error: { message: "An error occurred" } });
+    res.status(400).json({ error: { message: error.message } });
   }
 });
 router.get("/Category", async (req, res) => {
