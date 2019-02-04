@@ -11,7 +11,7 @@ const Department = require("../Models//Department_model");
 const Product = require("../Models/Product_model");
 
 // Cnx a la base de donnée
-mongoose.connect("mongodb://localhost/boutique_app", { useNewUrlParser: true });
+// mongoose.connect(  "mongodb://localhost/boutique_app",{ useNewUrlParser: true });
 
 const deleteFunction = async (req, res, choose) => {
   try {
